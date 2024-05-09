@@ -3,8 +3,6 @@
 build.gradle.kts,d\b\dbcff70658daf80b53ce624f6adcaa529df5ed8d
 D
 app/build.gradle.kts,d\2\d2a4383452aad84a18429a5844d31330a012a9e6
-w
-Gapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/MainActivity.kt,b\b\bb10d258b8831727188f6257f6bf9e8684cb84ab
 ‡
 Wapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/ui/fragments/ArticleFragment.kt,6\c\6ccf6fca6fac696af2522255635cc6c52aefc960
 Š
@@ -21,3 +19,5 @@ x
 Happ/src/main/java/com/arvato/batuhansatilmis/thenewsapp/models/Source.kt,b\9\b9d9cc5567eee0f3af3e45e44fdfe73d0fca1b5d
 y
 Iapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/models/Article.kt,a\3\a38108e256d87d935383766a4e5e14bb75d27a7b
+z
+Japp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/ui/NewsActivity.kt,e\c\eccd20b3ab7c5181c0a654f84d7c5f636a52f5ee

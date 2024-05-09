@@ -34,8 +34,11 @@
         android:id="@+id/articleFragment"
         android:name="com.arvato.batuhansatilmis.thenewsapp.ui.fragments.ArticleFragment"
         android:label="ArticleFragment" >
-        <argument
-            android:name="article"
-            app:argType="com.example.newsprojectpractice.models.Article" />
+
+
+    <argument
+        android:name="article"
+        app:argType="com.arvato.batuhansatilmis.thenewsapp.models.Article"
+        />
     </fragment>
 </navigation>
