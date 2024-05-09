@@ -33,3 +33,7 @@ x
 Happ/src/main/java/com/arvato/batuhansatilmis/thenewsapp/db/Converters.kt,6\c\6c8147f1bc9254226f21a5bd7952037bbea69869
 }
 Mapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/db/ArticleDatabase.kt,3\d\3db79fd9dc8075196d3a9f70a1740056181e9fc1
+„
+Tapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/repository/NewsRepository.kt,e\4\e4accf777c8cf718d8e92daf8e2a827e028c59f8
+
+Oapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/adapters/NewsAdapter.kt,d\c\dcfb4b914389961f21971d6e06a173bf3848062a
