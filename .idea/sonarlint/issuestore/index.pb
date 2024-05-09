@@ -21,3 +21,7 @@ y
 Iapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/models/Article.kt,a\3\a38108e256d87d935383766a4e5e14bb75d27a7b
 z
 Japp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/ui/NewsActivity.kt,e\c\eccd20b3ab7c5181c0a654f84d7c5f636a52f5ee
+y
+Iapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/util/Constants.kt,2\a\2a8c8c879bb3a4d76effb2cdd0e576f3efdb1e8d
+v
+Fapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/api/NewsAPI.kt,0\2\02b126a2c3d849eb69eaf912c3aa3e83b7b4554e
