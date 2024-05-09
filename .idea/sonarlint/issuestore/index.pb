@@ -25,3 +25,5 @@ y
 Iapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/util/Constants.kt,2\a\2a8c8c879bb3a4d76effb2cdd0e576f3efdb1e8d
 v
 Fapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/api/NewsAPI.kt,0\2\02b126a2c3d849eb69eaf912c3aa3e83b7b4554e
+
+Oapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/api/RetrofitInstance.kt,9\e\9eec23d352512ad25cc473aff28636e38c54ed39
