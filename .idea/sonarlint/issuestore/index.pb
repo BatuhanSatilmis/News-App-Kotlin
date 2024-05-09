@@ -31,3 +31,5 @@ x
 Happ/src/main/java/com/arvato/batuhansatilmis/thenewsapp/db/ArticleDAO.kt,c\7\c78c0e8b908de776634ec1fba38740c613fccecf
 x
 Happ/src/main/java/com/arvato/batuhansatilmis/thenewsapp/db/Converters.kt,6\c\6c8147f1bc9254226f21a5bd7952037bbea69869
+}
+Mapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/db/ArticleDatabase.kt,3\d\3db79fd9dc8075196d3a9f70a1740056181e9fc1
