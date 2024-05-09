@@ -11,6 +11,7 @@
         android:textColor="@color/purple"
         android:textStyle="bold"
         android:layout_marginStart="8dp"
+
         android:layout_marginTop="12dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -18,5 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="679dp"
         android:layout_marginTop="60dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:clipToPadding="false" />
 </FrameLayout>
