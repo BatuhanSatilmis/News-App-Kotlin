@@ -27,3 +27,5 @@ v
 Fapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/api/NewsAPI.kt,0\2\02b126a2c3d849eb69eaf912c3aa3e83b7b4554e
 
 Oapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/api/RetrofitInstance.kt,9\e\9eec23d352512ad25cc473aff28636e38c54ed39
+x
+Happ/src/main/java/com/arvato/batuhansatilmis/thenewsapp/db/ArticleDAO.kt,c\7\c78c0e8b908de776634ec1fba38740c613fccecf
