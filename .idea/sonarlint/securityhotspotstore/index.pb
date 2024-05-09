@@ -15,3 +15,9 @@ Yapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/ui/fragments/HeadlinesF
 Vapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/ui/fragments/SearchFragment.kt,c\a\ca0cd58e2542b06290497d7ae18c85cf9eb058dc
 P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+~
+Napp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/models/NewsResponse.kt,5\c\5c4ff3d28151e480f7523b2ba53c50c3148c17a4
+x
+Happ/src/main/java/com/arvato/batuhansatilmis/thenewsapp/models/Source.kt,b\9\b9d9cc5567eee0f3af3e45e44fdfe73d0fca1b5d
+y
+Iapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/models/Article.kt,a\3\a38108e256d87d935383766a4e5e14bb75d27a7b
