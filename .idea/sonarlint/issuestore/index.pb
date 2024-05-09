@@ -13,3 +13,5 @@ Zapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/ui/fragments/Favourites
 Yapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/ui/fragments/HeadlinesFragment.kt,4\0\408d2e2ebbb5f2376d7c3cad1cfcf36631a6e7de
 †
 Vapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/ui/fragments/SearchFragment.kt,c\a\ca0cd58e2542b06290497d7ae18c85cf9eb058dc
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
