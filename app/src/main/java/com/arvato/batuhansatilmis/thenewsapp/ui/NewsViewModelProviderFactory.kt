@@ -12,4 +12,6 @@ class NewsViewModelProviderFactory (val app: Application, val newsRepository: Ne
          return NewsViewModel(app, newsRepository) as T
   }
 
+
+
 }
