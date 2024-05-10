@@ -3,9 +3,9 @@ package com.arvato.batuhansatilmis.thenewsapp.ui
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.arvato.batuhansatilmis.thenewsapp.R
+import androidx.lifecycle.ViewModelProvider
 import com.arvato.batuhansatilmis.thenewsapp.databinding.ActivityNewsBinding
-import com.arvato.batuhansatilmis.thenewsapp.repository.NewsRepository
+import com.arvato.batuhansatilmis.thenewsapp.db.ArticleDatabase
 
 class NewsActivity : AppCompatActivity() {
 
@@ -19,8 +19,14 @@ class NewsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-    val newsRepository : NewsRepository(ArticleDatabase())
+        fun newsRepository(articleDatabase: ArticleDatabase) {
+             newsRepository(ArticleDatabase(this))
+        }
 
+        val viewModelProviderFactory = NewsViewModelProviderFactory(application , newsRepository(ArticleDatabase(this)) )
+        newsViewModel = ViewModelProvider(this, viewModelProviderFactory)[NewsViewModel::class.java]
 
     }
+
+
 }

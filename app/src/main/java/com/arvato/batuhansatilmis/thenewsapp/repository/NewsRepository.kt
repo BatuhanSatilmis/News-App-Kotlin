@@ -8,7 +8,7 @@ import com.arvato.batuhansatilmis.thenewsapp.models.NewsResponse
 import retrofit2.Response
 
 
-class NewsRepository(val db: ArticleDatabase) {
+class NewsRepository(private val db: ArticleDatabase) {
 
 
      suspend fun getHeadlines(countryCode: String, pageNumber: Int) =
