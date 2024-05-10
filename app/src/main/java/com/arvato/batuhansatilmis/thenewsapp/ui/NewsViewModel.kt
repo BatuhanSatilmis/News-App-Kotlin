@@ -23,7 +23,7 @@ class NewsViewModel(app: Application, private val newsRepository: NewsRepository
     private var searchNewsPage = 1
     private var searchNewsResponse: NewsResponse? = null
     private var newSearchQuery: String? = null
-    val oldSearchQuery: String? = null
+    private var oldSearchQuery: String? = null
 
 
     init {
@@ -31,10 +31,10 @@ class NewsViewModel(app: Application, private val newsRepository: NewsRepository
      //   searchNews("/v2/")
     }
 
-    fun getHeadlines(countryCode: String) = viewModelScope.launch {
+  private fun getHeadlines(countryCode: String) = viewModelScope.launch {
         headLinesInternet(countryCode) //parsing arguments countrycode
     }
-    fun searchNews(searchQuery: String) = viewModelScope.launch {
+    private fun searchNews(searchQuery: String) = viewModelScope.launch {
         searchNewsInternet(searchQuery)
     }
     private fun handleHeadlinesResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
@@ -55,15 +55,25 @@ class NewsViewModel(app: Application, private val newsRepository: NewsRepository
         }
     }
 
-    private fun handleSearchNewsResponse(response : Resource<NewsResponse> {
-        if (response.isSuccessful) {
+    private fun handleSearchNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
+        return if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
-
-            }
+                if(searchNewsResponse == null || newSearchQuery != oldSearchQuery){
+                    searchNewsPage = 1
+                    oldSearchQuery = newSearchQuery
+                    searchNewsResponse = resultResponse
+                } else {
+                    searchNewsPage++  // Assuming you meant to increment the page number here
+                    val oldSearchArticles = searchNewsResponse?.articles
+                    val newSearchArticles = resultResponse.articles
+                    oldSearchArticles?.addAll(newSearchArticles)
+                }
+                Resource.Success(searchNewsResponse ?: resultResponse)
+            } ?: Resource.Error("Empty response body", null)  // Return error if response body is null
+        } else {
+            Resource.Error(response.message() ?: "Unknown error")  // Handle case where response message might be null
         }
     }
-
-
 
 
     fun addToFavourites(article: Article) = viewModelScope.launch{
@@ -105,7 +115,6 @@ class NewsViewModel(app: Application, private val newsRepository: NewsRepository
     }
 
 
-
     private suspend fun searchNewsInternet(searchQuery: String) {
         newSearchQuery = searchQuery
         searchNews.postValue(Resource.Loading())
@@ -124,7 +133,6 @@ class NewsViewModel(app: Application, private val newsRepository: NewsRepository
             }
         }
     }
-
 
 }
 
