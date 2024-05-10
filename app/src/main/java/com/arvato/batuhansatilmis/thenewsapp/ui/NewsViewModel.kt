@@ -1,26 +1,27 @@
 package com.arvato.batuhansatilmis.thenewsapp.ui
-import com.arvato.batuhansatilmis.thenewsapp.ui.Resource
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.core.content.getSystemService
+import com.arvato.batuhansatilmis.thenewsapp.ui.Resource
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.arvato.batuhansatilmis.thenewsapp.models.Article
 import com.arvato.batuhansatilmis.thenewsapp.models.NewsResponse
 import com.arvato.batuhansatilmis.thenewsapp.repository.NewsRepository
-import com.bumptech.glide.load.engine.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import java.io.IOError
+import java.io.IOException
 
 
-class NewsViewModel(app: Application, val newsRepository: NewsRepository) : AndroidViewModel(app) {
+class NewsViewModel(app: Application, private val newsRepository: NewsRepository) : AndroidViewModel(app) {
 
     val headlines: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
-    var headlinesPage = 1
-    var headlinesResponse : NewsResponse? = null
+    private var headlinesPage = 1
+    private var headlinesResponse : NewsResponse? = null
     val searchNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     var searchNewsPage = 1
     val searchNewsResponse: NewsResponse? = null
@@ -53,7 +54,7 @@ class NewsViewModel(app: Application, val newsRepository: NewsRepository) : Andr
         newsRepository.deleteArticle(article)
     }
 
-    fun internetConnection(context: Context): Boolean {
+    private fun internetConnection(context: Context): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         return capabilities?.let {
@@ -61,6 +62,26 @@ class NewsViewModel(app: Application, val newsRepository: NewsRepository) : Andr
                     it.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
                     it.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
         } ?: false
+    }
+
+    private suspend fun headLinesInternet(countryCode: String){
+        headlines.postValue(Resource.Loading())
+
+        try {
+            if(internetConnection(this.getApplication())){
+                val response = newsRepository.getHeadlines(countryCode, headlinesPage)
+                headlines.postValue(handleHeadlinesResponse(response))
+            }
+            else{
+                headlines.postValue(Resource.Error("no internet connection.."))
+            }
+        }
+        catch (t: Throwable){
+            when(t){
+                is IOException -> headlines.postValue(Resource.Error("unable to connect my friend.."))
+                else -> headlines.postValue(Resource.Error("No signal my friend.."))
+            }
+        }
     }
 
 
