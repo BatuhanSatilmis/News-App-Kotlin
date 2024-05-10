@@ -14,7 +14,7 @@ import com.arvato.batuhansatilmis.thenewsapp.repository.NewsRepository
 class NewsActivity : AppCompatActivity() {
 
 
-  private lateinit var newsViewModel: NewsViewModel
+  lateinit var newsViewModel: NewsViewModel
   private lateinit var binding : ActivityNewsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
