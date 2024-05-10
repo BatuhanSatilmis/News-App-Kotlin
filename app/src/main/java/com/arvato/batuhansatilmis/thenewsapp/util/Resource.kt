@@ -1,4 +1,4 @@
-package com.arvato.batuhansatilmis.thenewsapp.ui
+package com.arvato.batuhansatilmis.thenewsapp.util
 
 sealed class Resource<T>(
     val data: T? = null,

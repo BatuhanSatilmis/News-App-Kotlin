@@ -43,3 +43,5 @@ v
 Fapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/ui/Resource.kt,7\a\7a19fca52bc23770aaeaf027b867b2d93359aa07
 Š
 Zapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/ui/NewsViewModelProviderFactory.kt,a\a\aa13070d690fbd5b895ddf8934c0f72d484103eb
+x
+Happ/src/main/java/com/arvato/batuhansatilmis/thenewsapp/util/Resource.kt,e\d\eda734c9b0cd7e5509073298f063fd83ae747d86

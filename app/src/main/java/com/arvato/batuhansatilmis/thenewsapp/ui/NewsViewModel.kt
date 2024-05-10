@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.arvato.batuhansatilmis.thenewsapp.models.Article
 import com.arvato.batuhansatilmis.thenewsapp.models.NewsResponse
 import com.arvato.batuhansatilmis.thenewsapp.repository.NewsRepository
+import com.arvato.batuhansatilmis.thenewsapp.util.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
