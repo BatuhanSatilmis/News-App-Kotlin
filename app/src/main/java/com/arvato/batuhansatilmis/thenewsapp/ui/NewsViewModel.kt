@@ -1,6 +1,10 @@
 package com.arvato.batuhansatilmis.thenewsapp.ui
 import com.arvato.batuhansatilmis.thenewsapp.ui.Resource
 import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import androidx.core.content.getSystemService
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -45,7 +49,19 @@ class NewsViewModel(app: Application, val newsRepository: NewsRepository) : Andr
         newsRepository.upsert(article)
     }
     fun getFavouriteNews() = newsRepository.getFavouriteNews()
+    fun deleteArticle(article: Article) = viewModelScope.launch {
+        newsRepository.deleteArticle(article)
+    }
 
+    fun internetConnection(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        return capabilities?.let {
+            it.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                    it.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                    it.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+        } ?: false
+    }
 
 
 }
