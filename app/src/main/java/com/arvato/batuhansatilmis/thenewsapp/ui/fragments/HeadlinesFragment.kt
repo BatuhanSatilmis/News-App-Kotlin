@@ -1,13 +1,17 @@
 package com.arvato.batuhansatilmis.thenewsapp.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Message
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView
+import android.widget.Button
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.arvato.batuhansatilmis.thenewsapp.R
 import com.arvato.batuhansatilmis.thenewsapp.adapters.NewsAdapter
@@ -15,22 +19,39 @@ import com.arvato.batuhansatilmis.thenewsapp.databinding.ActivityNewsBinding
 import com.arvato.batuhansatilmis.thenewsapp.databinding.FragmentHeadlinesBinding
 import com.arvato.batuhansatilmis.thenewsapp.repository.NewsRepository
 import com.arvato.batuhansatilmis.thenewsapp.ui.NewsViewModel
+import com.arvato.batuhansatilmis.thenewsapp.util.Constants
 
 
 class HeadlinesFragment : Fragment() {
   //pagination progressbar aswell as error message
 
   lateinit var newsViewModel: NewsViewModel
-  lateinit var newsViewAdapter: NewsAdapter
+  private lateinit var newsViewAdapter: NewsAdapter
   lateinit var newsRepository: NewsRepository
   private lateinit var newsBinding: FragmentHeadlinesBinding
-  lateinit var errorText: TextView
-  lateinit var itemHeadlinesError: CardView
+  private lateinit var errorText: TextView
+  private lateinit var retryButton : Button
+  private lateinit var itemHeadlinesError: CardView
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         newsBinding = FragmentHeadlinesBinding.bind(view)
+
+        itemHeadlinesError = view.findViewById(R.id.itemHeadlinesError)
+        val inflater = requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val view: View = inflater.inflate(R.layout.item_error, null)
+
+        retryButton = view.findViewById(R.id.retryButton)
+        errorText = view.findViewById(R.id.errorText)
+        setupHeadLinesRecycler() // ->
+
+        newsViewAdapter.setOnItemClickListener{
+            val bundle: Bundle().apply {
+               // ->
+        }
+
+        }
 
     }
 
@@ -60,8 +81,47 @@ class HeadlinesFragment : Fragment() {
     val scrollListener = object : RecyclerView.OnScrollListener(){
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
+
+            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+            val visibleItemCount = layoutManager.childCount
+            val totalItemCount = layoutManager.itemCount
+            val isNoErrors = !isError
+            val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
+            val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= 0
+            val isNotAtBeggining = firstVisibleItemPosition >= 0
+            val isTotalMoreThanVisible = totalItemCount >= Constants.QUERY_PAGE_SIZE
+            val shouldPaginate = isNoErrors &&
+                    isNotLoadingAndNotLastPage &&
+                    isNotAtBeggining &&
+                    isAtLastItem &&
+                    isTotalMoreThanVisible &&
+                    isScrolling
+            if(shouldPaginate) {
+                newsViewModel.getHeadlines("tr")
+                isScrolling = false
+            }
         }
+
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                isScrolling = true
+            }
+
+        }
+    }
+    private fun setupHeadLinesRecycler(){
+        newsViewAdapter = NewsAdapter()
+        newsBinding.recyclerHeadlines.apply {
+            adapter = this@HeadlinesFragment.newsViewAdapter
+            layoutManager = LinearLayoutManager(activity)
+            addOnScrollListener(this@HeadlinesFragment.scrollListener)
+        }
+
     }
 
 
 }
+
+
