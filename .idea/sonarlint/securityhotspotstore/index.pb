@@ -45,3 +45,5 @@ Fapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/ui/Resource.kt,7\a\7a1
 Zapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/ui/NewsViewModelProviderFactory.kt,a\a\aa13070d690fbd5b895ddf8934c0f72d484103eb
 x
 Happ/src/main/java/com/arvato/batuhansatilmis/thenewsapp/util/Resource.kt,e\d\eda734c9b0cd7e5509073298f063fd83ae747d86
+X
+(gradle/wrapper/gradle-wrapper.properties,f\b\fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
