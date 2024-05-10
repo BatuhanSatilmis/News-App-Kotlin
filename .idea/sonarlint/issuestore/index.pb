@@ -41,3 +41,5 @@ Oapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/adapters/NewsAdapter.kt
 Kapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/ui/NewsViewModel.kt,e\8\e8f5ed4b659de9f22c445d55258181ab91f9e1ad
 v
 Fapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/ui/Resource.kt,7\a\7a19fca52bc23770aaeaf027b867b2d93359aa07
+Š
+Zapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/ui/NewsViewModelProviderFactory.kt,a\a\aa13070d690fbd5b895ddf8934c0f72d484103eb
