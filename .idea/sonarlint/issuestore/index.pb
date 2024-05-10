@@ -37,3 +37,7 @@ Mapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/db/ArticleDatabase.kt,
 Tapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/repository/NewsRepository.kt,e\4\e4accf777c8cf718d8e92daf8e2a827e028c59f8
 
 Oapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/adapters/NewsAdapter.kt,d\c\dcfb4b914389961f21971d6e06a173bf3848062a
+{
+Kapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/ui/NewsViewModel.kt,e\8\e8f5ed4b659de9f22c445d55258181ab91f9e1ad
+v
+Fapp/src/main/java/com/arvato/batuhansatilmis/thenewsapp/ui/Resource.kt,7\a\7a19fca52bc23770aaeaf027b867b2d93359aa07
