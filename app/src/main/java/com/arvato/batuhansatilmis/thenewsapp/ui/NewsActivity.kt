@@ -3,9 +3,7 @@ package com.arvato.batuhansatilmis.thenewsapp.ui
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ReportFragment.Companion.reportFragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavHost
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.arvato.batuhansatilmis.thenewsapp.R
