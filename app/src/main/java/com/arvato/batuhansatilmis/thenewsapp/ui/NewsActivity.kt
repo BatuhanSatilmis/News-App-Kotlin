@@ -7,6 +7,7 @@ import androidx.lifecycle.ReportFragment.Companion.reportFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHost
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.arvato.batuhansatilmis.thenewsapp.R
 import com.arvato.batuhansatilmis.thenewsapp.databinding.ActivityNewsBinding
 import com.arvato.batuhansatilmis.thenewsapp.db.ArticleDatabase
@@ -36,6 +37,8 @@ class NewsActivity : AppCompatActivity() {
         newsViewModel = ViewModelProvider(this, viewModelProviderFactory)[NewsViewModel::class.java]
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.newsNavHostFragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        binding.bottomNavigationView.setupWithNavController(navController)
 
 
 
