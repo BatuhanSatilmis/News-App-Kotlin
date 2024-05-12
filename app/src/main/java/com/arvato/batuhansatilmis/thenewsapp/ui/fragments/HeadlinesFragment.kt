@@ -10,7 +10,10 @@ import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.arvato.batuhansatilmis.thenewsapp.R
@@ -20,6 +23,7 @@ import com.arvato.batuhansatilmis.thenewsapp.databinding.FragmentHeadlinesBindin
 import com.arvato.batuhansatilmis.thenewsapp.repository.NewsRepository
 import com.arvato.batuhansatilmis.thenewsapp.ui.NewsViewModel
 import com.arvato.batuhansatilmis.thenewsapp.util.Constants
+import com.arvato.batuhansatilmis.thenewsapp.util.Resource
 
 
 class HeadlinesFragment : Fragment() {
@@ -46,11 +50,44 @@ class HeadlinesFragment : Fragment() {
         errorText = view.findViewById(R.id.errorText)
         setupHeadLinesRecycler() // ->
 
-        newsViewAdapter.setOnItemClickListener{
-            val bundle: Bundle().apply {
-               // ->
+        newsViewAdapter.setOnItemClickListener {
+            val bundle = Bundle().apply {
+                putSerializable("article", it)
+            }
+            findNavController().navigate(R.id.action_headlinesFragment_to_articleFragment, bundle)
         }
 
+        newsViewModel.headlines.observe(viewLifecycleOwner, Observer{response ->
+         when(response) {
+             is Resource.Success<*> -> {
+                 hideProgressBar()
+                 hideErrorMessage()
+                 response.data?.let { newsResponse ->
+                     newsViewAdapter.differ.submitList(newsResponse.articles.toList())
+                     val totalPages = newsResponse.totalResults / Constants.QUERY_PAGE_SIZE +2
+                     isLastPage = newsViewModel.headlinesPage == totalPages
+                     if(isLastPage){
+                         newsBinding.recyclerHeadlines.setPadding(0,0,0,0)
+                     }
+
+                 }
+             }
+             is Resource.Error<*> -> {
+           hideProgressBar()
+                 response.message?.let {
+                     message -> Toast.makeText(activity,"sorry error $message",Toast.LENGTH_SHORT).show()
+                     showErrorMessage(message)
+                 }
+             }
+             is Resource.Loading<*> -> {
+                showProgressBar()
+             }
+
+         }
+        })
+
+        retryButton.setOnClickListener {
+            newsViewModel.getHeadlines("tr")
         }
 
     }
