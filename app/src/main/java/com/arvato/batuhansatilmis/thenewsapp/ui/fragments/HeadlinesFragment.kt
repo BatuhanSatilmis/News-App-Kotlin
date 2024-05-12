@@ -26,7 +26,7 @@ import com.arvato.batuhansatilmis.thenewsapp.util.Constants
 import com.arvato.batuhansatilmis.thenewsapp.util.Resource
 
 
-class HeadlinesFragment : Fragment() {
+class HeadlinesFragment : Fragment(R.layout.fragment_headlines) {
   //pagination progressbar aswell as error message
 
   lateinit var newsViewModel: NewsViewModel

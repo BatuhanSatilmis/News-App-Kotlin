@@ -15,7 +15,7 @@ import com.arvato.batuhansatilmis.thenewsapp.ui.NewsViewModel
 import com.google.android.material.snackbar.Snackbar
 
 
-class ArticleFragment : Fragment(R.layout.fragment_search) {
+class ArticleFragment : Fragment(R.layout.fragment_article) {
 
     private lateinit var newsViewModel: NewsViewModel
     private lateinit var binding: FragmentArticleBinding
