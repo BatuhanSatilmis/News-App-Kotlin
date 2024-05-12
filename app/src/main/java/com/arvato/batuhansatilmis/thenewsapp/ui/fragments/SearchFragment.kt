@@ -6,16 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
+import android.widget.AbsListView
 import android.widget.Button
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.arvato.batuhansatilmis.thenewsapp.R
 import com.arvato.batuhansatilmis.thenewsapp.adapters.NewsAdapter
 import com.arvato.batuhansatilmis.thenewsapp.databinding.FragmentSearchBinding
 import com.arvato.batuhansatilmis.thenewsapp.ui.NewsActivity
 import com.arvato.batuhansatilmis.thenewsapp.ui.NewsViewModel
+import com.arvato.batuhansatilmis.thenewsapp.util.Constants
 
 
 class SearchFragment : Fragment() {
@@ -59,7 +63,39 @@ class SearchFragment : Fragment() {
         isError = true
     }
 
+    val scrollListener = object : RecyclerView.OnScrollListener(){
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
 
+            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+            val visibleItemCount = layoutManager.childCount
+            val totalItemCount = layoutManager.itemCount
+            val isNoErrors = !isError
+            val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
+            val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= 0
+            val isNotAtBeggining = firstVisibleItemPosition >= 0
+            val isTotalMoreThanVisible = totalItemCount >= Constants.QUERY_PAGE_SIZE
+            val shouldPaginate = isNoErrors &&
+                    isNotLoadingAndNotLastPage &&
+                    isNotAtBeggining &&
+                    isAtLastItem &&
+                    isTotalMoreThanVisible &&
+                    isScrolling
+            if(shouldPaginate) {
+                newsViewModel.getHeadlines("tr")
+                isScrolling = false
+            }
+        }
+
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                isScrolling = true
+            }
+
+        }
+    }
 
 
 
