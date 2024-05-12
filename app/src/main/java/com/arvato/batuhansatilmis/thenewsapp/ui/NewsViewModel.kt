@@ -35,7 +35,7 @@ class NewsViewModel(app: Application, private val newsRepository: NewsRepository
   fun getHeadlines(countryCode: String) = viewModelScope.launch {
         headLinesInternet(countryCode) //parsing arguments countrycode
     }
-    private fun searchNews(searchQuery: String) = viewModelScope.launch {
+    fun searchNews(searchQuery: String) = viewModelScope.launch {
         searchNewsInternet(searchQuery)
     }
     private fun handleHeadlinesResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
