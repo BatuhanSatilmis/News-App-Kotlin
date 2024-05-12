@@ -21,7 +21,7 @@ class NewsViewModel(app: Application, private val newsRepository: NewsRepository
     var headlinesPage = 1
     private var headlinesResponse : NewsResponse? = null
     private var searchNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
-    private var searchNewsPage = 1
+    var searchNewsPage = 1
     private var searchNewsResponse: NewsResponse? = null
     private var newSearchQuery: String? = null
     private var oldSearchQuery: String? = null

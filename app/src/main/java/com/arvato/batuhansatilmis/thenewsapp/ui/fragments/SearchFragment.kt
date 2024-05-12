@@ -81,7 +81,7 @@ class SearchFragment : Fragment() {
                     response.data?.let { newsResponse ->
                         newsAdapter.differ.submitList(newsResponse.articles.toList())
                         val totalPages = newsResponse.totalResults / Constants.QUERY_PAGE_SIZE +2
-                        isLastPage = newsViewModel.headlinesPage == totalPages
+                        isLastPage = newsViewModel.searchNewsPage == totalPages
                         if(isLastPage){
                             binding.recyclerSearch.setPadding(0,0,0,0)
                         }
@@ -101,6 +101,14 @@ class SearchFragment : Fragment() {
 
             }
         })
+
+        retryButton.setOnClickListener{
+            if(binding.searchEdit.text.toString().isNotEmpty()){
+                newsViewModel.searchNews(binding.searchEdit.text.toString())
+            } else{
+                hideErrorMessage()
+            }
+        }
 
 
     }
