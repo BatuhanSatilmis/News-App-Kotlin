@@ -174,9 +174,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private fun setupSearchRecycler() {
         newsAdapter = NewsAdapter()
         binding.recyclerSearch.apply {
-            adapter = this@SearchFragment.newsAdapter
+            adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
-            addOnScrollListener(this@SearchFragment.scrollListener)
+            addOnScrollListener(scrollListener)
         }
 
 

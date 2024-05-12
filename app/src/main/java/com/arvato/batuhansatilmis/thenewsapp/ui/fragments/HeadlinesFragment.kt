@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,96 +27,77 @@ import com.arvato.batuhansatilmis.thenewsapp.util.Constants
 import com.arvato.batuhansatilmis.thenewsapp.util.Resource
 
 
-class HeadlinesFragment : Fragment(R.layout.fragment_headlines) {
-  //pagination progressbar aswell as error message
+class HeadlinesFragment : Fragment() {
 
-  lateinit var newsViewModel: NewsViewModel
-  private lateinit var newsViewAdapter: NewsAdapter
-  lateinit var newsRepository: NewsRepository
-  private lateinit var newsBinding: FragmentHeadlinesBinding
-  private lateinit var errorText: TextView
-  private lateinit var retryButton : Button
-  private lateinit var itemHeadlinesError: CardView
+    private lateinit var binding: FragmentHeadlinesBinding
+    private lateinit var newsAdapter: NewsAdapter
 
+    private val newsViewModel: NewsViewModel by lazy {
+        ViewModelProvider(requireActivity()).get(NewsViewModel::class.java)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = FragmentHeadlinesBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        newsBinding = FragmentHeadlinesBinding.bind(view)
+        setupRecyclerView()
 
-        itemHeadlinesError = view.findViewById(R.id.itemHeadlinesError)
-        val inflater = requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view: View = inflater.inflate(R.layout.item_error, null)
-
-        retryButton = view.findViewById(R.id.retryButton)
-        errorText = view.findViewById(R.id.errorText)
-        setupHeadLinesRecycler() // ->
-
-        newsViewAdapter.setOnItemClickListener {
-            val bundle = Bundle().apply {
-                putSerializable("article", it)
+        newsViewModel.headlines.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    hideProgressBar()
+                    response.data?.let { newsResponse ->
+                        newsAdapter.differ.submitList(newsResponse.articles.toList())
+                        val totalPages = newsResponse.totalResults / Constants.QUERY_PAGE_SIZE + 2
+                        isLastPage = newsViewModel.headlinesPage == totalPages
+                        if (isLastPage) {
+                            binding.recyclerHeadlines.setPadding(0, 0, 0, 0)
+                        }
+                    }
+                }
+                is Resource.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        showErrorMessage(message)
+                    }
+                }
+                is Resource.Loading -> {
+                    showProgressBar()
+                }
             }
-            findNavController().navigate(R.id.action_headlinesFragment_to_articleFragment, bundle)
         }
 
-        newsViewModel.headlines.observe(viewLifecycleOwner, Observer{response ->
-         when(response) {
-             is Resource.Success<*> -> {
-                 hideProgressBar()
-                 hideErrorMessage()
-                 response.data?.let { newsResponse ->
-                     newsViewAdapter.differ.submitList(newsResponse.articles.toList())
-                     val totalPages = newsResponse.totalResults / Constants.QUERY_PAGE_SIZE +2
-                     isLastPage = newsViewModel.headlinesPage == totalPages
-                     if(isLastPage){
-                         newsBinding.recyclerHeadlines.setPadding(0,0,0,0)
-                     }
+        binding.recyclerHeadlines.addOnScrollListener(this.scrollListener)
+    }
 
-                 }
-             }
-             is Resource.Error<*> -> {
-           hideProgressBar()
-                 response.message?.let {
-                     message -> Toast.makeText(activity,"sorry error $message",Toast.LENGTH_SHORT).show()
-                     showErrorMessage(message)
-                 }
-             }
-             is Resource.Loading<*> -> {
-                showProgressBar()
-             }
-
-         }
-        })
-
-        retryButton.setOnClickListener {
-            newsViewModel.getHeadlines("tr")
+    private fun setupRecyclerView() {
+        newsAdapter = NewsAdapter()
+        binding.recyclerHeadlines.apply {
+            adapter = newsAdapter
+            layoutManager = LinearLayoutManager(activity)
         }
-
     }
 
-    var isError = false
-    var isLoading = false
-    var isLastPage = false
-    var isScrolling = false
-
-    private fun hideProgressBar(){
-        newsBinding.paginationProgressBar.visibility = View.INVISIBLE
-        isLoading = false
-    }
-    private fun showProgressBar(){
-        newsBinding.paginationProgressBar.visibility = View.VISIBLE
-        isLoading = true
-    }
-    private fun hideErrorMessage(){
-        newsBinding.itemHeadlinesError.errorText.visibility = View.INVISIBLE
-        isError = false
+    private fun showProgressBar() {
+        binding.paginationProgressBar.visibility = View.VISIBLE
     }
 
-    private fun showErrorMessage(message: String){
-        newsBinding.itemHeadlinesError.errorText.visibility = View.VISIBLE
-        isError = true
+    private fun hideProgressBar() {
+        binding.paginationProgressBar.visibility = View.INVISIBLE
     }
 
-    val scrollListener = object : RecyclerView.OnScrollListener(){
+    private fun showErrorMessage(message: String) {
+        Toast.makeText(context, "An error occurred: $message", Toast.LENGTH_LONG).show()
+    }
+
+    private var isLastPage = false
+    private var isLoading = false
+    private var isScrolling = false
+
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
 
@@ -123,18 +105,14 @@ class HeadlinesFragment : Fragment(R.layout.fragment_headlines) {
             val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
             val visibleItemCount = layoutManager.childCount
             val totalItemCount = layoutManager.itemCount
-            val isNoErrors = !isError
+
             val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
-            val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= 0
-            val isNotAtBeggining = firstVisibleItemPosition >= 0
+            val isAtLastItem = firstVisibleItemPosition + visibleItemCount >= totalItemCount
+            val isNotAtBeginning = firstVisibleItemPosition >= 0
             val isTotalMoreThanVisible = totalItemCount >= Constants.QUERY_PAGE_SIZE
-            val shouldPaginate = isNoErrors &&
-                    isNotLoadingAndNotLastPage &&
-                    isNotAtBeggining &&
-                    isAtLastItem &&
-                    isTotalMoreThanVisible &&
-                    isScrolling
-            if(shouldPaginate) {
+            val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning && isTotalMoreThanVisible && isScrolling
+
+            if (shouldPaginate) {
                 newsViewModel.getHeadlines("tr")
                 isScrolling = false
             }
@@ -142,23 +120,11 @@ class HeadlinesFragment : Fragment(R.layout.fragment_headlines) {
 
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
-            if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+            if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                 isScrolling = true
             }
-
         }
     }
-    private fun setupHeadLinesRecycler(){
-        newsViewAdapter = NewsAdapter()
-        newsBinding.recyclerHeadlines.apply {
-            adapter = this@HeadlinesFragment.newsViewAdapter
-            layoutManager = LinearLayoutManager(activity)
-            addOnScrollListener(this@HeadlinesFragment.scrollListener)
-        }
-
-    }
-
-
 }
 
 
